@@ -26,7 +26,7 @@ I included the countries where it is spoken because it is important in Spanish H
 One important fact from the reading is <Br>
 This picture/symbol represents the places where it all begins <Br>
 These examples are different because shows the exact locations where the language is spoken  <Br>
-They are united because  <Br>
+They are united because When it comes to language, we all speak the same language, and that's the only thing we have in common culturally. <Br>
 unidos, somos mas means that we are all a strong and unique language in the world to me.
 
 ---
