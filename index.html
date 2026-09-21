@@ -1,1 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Mapa Hispano: explora los territorios donde se habla español y conoce su historia.">
+  <title>Mapa Hispano · Chizu</title>
+  <style>
+    :root{--ink:#11243b;--muted:#607089;--paper:#f6f8fb;--white:#fff;--blue:#1d5fd1;--blue-dark:#123c88;--gold:#f5bb42;--line:#dbe4ef;--shadow:0 18px 50px rgba(22,48,83,.12)}
+    *{box-sizing:border-box} body{margin:0;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--paper);line-height:1.5} button{font:inherit;cursor:pointer} a{color:inherit}
+    .hero{min-height:430px;display:flex;align-items:center;position:relative;overflow:hidden;color:#fff;background:linear-gradient(110deg,rgba(7,24,51,.92),rgba(21,70,133,.68)),url('https://i.ibb.co/FLhpcNkr/images.jpg') center/cover;}
+    .hero:after{content:"";position:absolute;inset:auto -10% -140px;height:260px;background:var(--paper);transform:rotate(-5deg)} .wrap{width:min(1160px,calc(100% - 40px));margin:auto;position:relative;z-index:1}.hero .wrap{padding:55px 0 85px}.eyebrow{display:inline-flex;gap:8px;align-items:center;text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;font-weight:800;color:#fbd47b}.eyebrow:before{content:"✦"}.hero h1{font-family:Georgia,serif;font-size:clamp(2.8rem,7vw,5.8rem);line-height:.98;max-width:720px;margin:18px 0}.hero h1 span{color:#ffd167}.hero p{font-size:1.15rem;max-width:650px;color:#e5edf9;margin:0}.credit{display:inline-block;margin-top:25px;font-size:.9rem;color:#c4d3e8}.credit strong{color:#fff}
+    .content{position:relative;z-index:2;padding-bottom:65px}.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:-20px 0 22px}.tab{border:1px solid var(--line);background:var(--white);border-radius:999px;padding:11px 18px;color:var(--muted);font-weight:700;box-shadow:0 5px 16px rgba(30,54,86,.06);transition:.2s}.tab:hover,.tab.active{background:var(--blue);color:#fff;border-color:var(--blue);transform:translateY(-2px)}
+    .dashboard{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(285px,.8fr);gap:22px}.card{background:var(--white);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.map-card{padding:18px}.map-head{display:flex;align-items:center;justify-content:space-between;padding:0 8px 13px;gap:12px}.map-head h2{font-size:1.1rem;margin:0}.map-head small{color:var(--muted)}.map{background:#dceef7;border-radius:16px;min-height:445px;position:relative;overflow:hidden}.map svg{display:block;width:100%;height:100%;min-height:445px}.ocean{fill:#dceef7}.land{fill:#a8c899;stroke:#fff;stroke-width:2;stroke-linejoin:round}.land.europe{fill:#82b88b}.land.spain{fill:#e4a949}.land.active{fill:#477dbb}.graticule{fill:none;stroke:#b9d9e6;stroke-width:1;opacity:.6}.pin{cursor:pointer}.pin circle:first-child{fill:var(--blue);stroke:#fff;stroke-width:3}.pin text{font-weight:800;font-size:12px;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}.pin:hover circle:first-child{fill:#d88722}.legend{display:flex;gap:18px;flex-wrap:wrap;padding:14px 6px 3px;color:var(--muted);font-size:.85rem}.dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--blue);margin-right:6px}.dot.gold{background:#e4a949}.side{padding:25px}.side h2{margin:0 0 7px;font-family:Georgia,serif;font-size:1.65rem}.side-intro{color:var(--muted);font-size:.94rem;margin-top:0}.place{border-top:1px solid var(--line);padding:15px 0;display:flex;gap:12px;align-items:flex-start}.flag{font-size:1.45rem}.place h3{margin:0;font-size:1rem}.place p{margin:3px 0 0;color:var(--muted);font-size:.84rem}.place button{margin-left:auto;border:0;background:#edf3ff;color:var(--blue);border-radius:9px;padding:7px 10px;font-weight:800;font-size:.76rem}.stat{margin-top:14px;background:#f1f6fd;border-radius:14px;padding:13px}.stat strong{display:block;color:var(--blue);font-size:1.3rem}.stat span{color:var(--muted);font-size:.8rem}
+    .history{margin-top:25px;padding:34px}.history h2{font-family:Georgia,serif;font-size:2rem;margin:0 0 8px}.history>p{color:var(--muted);max-width:750px}.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:25px}.event{border-left:3px solid var(--gold);padding:2px 0 2px 16px}.event b{color:var(--blue);font-size:.82rem}.event h3{font-size:1.05rem;margin:5px 0}.event p{color:var(--muted);font-size:.9rem;margin:0}.footer{text-align:center;color:var(--muted);padding:25px;font-size:.85rem}.footer strong{color:var(--blue)}
+    .toast{position:fixed;left:50%;bottom:24px;z-index:5;transform:translate(-50%,150px);background:var(--ink);color:#fff;border-radius:12px;padding:13px 18px;box-shadow:var(--shadow);transition:.3s}.toast.show{transform:translate(-50%,0)}
+    @media(max-width:800px){.dashboard{grid-template-columns:1fr}.map{min-height:340px}.map svg{min-height:340px}.timeline{grid-template-columns:1fr}.hero{min-height:400px}.hero:after{bottom:-170px}.history{padding:25px}.map-head{align-items:flex-start;flex-direction:column}}
+    @media(max-width:480px){.wrap{width:min(100% - 24px,1160px)}.hero .wrap{padding-top:40px}.hero h1{font-size:3.25rem}.toolbar{margin-top:-12px}.tab{padding:9px 13px;font-size:.88rem}.side{padding:20px}.map-card{padding:12px}}
+  </style>
+</head>
+<body>
+  <header class="hero"><div class="wrap">
+    <div class="eyebrow">Lengua · cultura · identidad</div>
+    <h1>El mundo<br><span>en español</span></h1>
+    <p>Un viaje interactivo por los países y comunidades que comparten una de las lenguas más habladas del planeta.</p>
+    <span class="credit">Creado con cariño por <strong>Chizu</strong></span>
+  </div></header>
 
+  <main class="content wrap">
+    <nav class="toolbar" aria-label="Secciones">
+      <button class="tab active" data-view="all">🌎 Todos los lugares</button>
+      <button class="tab" data-view="america">🌴 Hispanoamérica</button>
+      <button class="tab" data-view="spain">🇪🇸 España</button>
+      <button class="tab" data-view="history">📖 Cómo empezó</button>
+    </nav>
+
+    <section class="dashboard" id="explore">
+      <div class="card map-card"><div class="map-head"><div><h2>Mapa de presencia hispana</h2><small>Haz clic en un marcador para descubrir un lugar</small></div><span aria-hidden="true">🔍</span></div>
+        <div class="map" aria-label="Mapa ilustrado del mundo con países hispanohablantes">
+          <svg viewBox="0 0 900 470" role="img" aria-labelledby="map-title"><title id="map-title">Mapa del mundo con lugares donde se habla español</title>
+            <rect class="ocean" width="900" height="470"/>
+            <g class="graticule"><path d="M0 115H900M0 235H900M0 355H900M180 0v470M360 0v470M540 0v470M720 0v470"/></g>
+            <!-- formas continentales estilizadas -->
+            <path class="land" d="M91 78l36-27 54 7 30 31-18 29 13 36-28 41-20 57-35 39-25-31 8-45-26-37 19-38z"/>
+            <path class="land" d="M175 252l35 10 34 38 11 43 35 41-11 42-29 12-26-27-20-50-31-28-15-48z"/>
+            <path class="land" d="M385 91l37-33 50 3 23 18 61 4 30 30-22 27-46 2-20 34-41-3-29 20-26-28z"/>
+            <path class="land europe" d="M485 177l31-17 37 7 17 23-25 20-38-2z"/>
+            <path class="land" d="M501 224l42-8 52 17 43 47-5 42 26 39-26 41-45-19-17-51-40-30-36-42z"/>
+            <path class="land" d="M650 93l51-27 79 18 59 48-13 36-48 17-33 40-44-19-12-42-43-20z"/>
+            <path class="land" d="M735 279l50 3 50 30-17 39-46-1-35-28z"/>
+            <path class="land" d="M815 382l29 11 11 26-30 9-23-19z"/>
+            <!-- España resaltada --> <path class="land spain" d="M481 165l14-8 15 8-5 12-19 1z"/>
+            <g class="pin" data-place="México" transform="translate(226 177)"><circle r="14"/><text y="1">🇲🇽</text></g>
+            <g class="pin" data-place="España" transform="translate(500 168)"><circle r="14"/><text y="1">🇪🇸</text></g>
+            <g class="pin" data-place="Colombia" transform="translate(287 280)"><circle r="14"/><text y="1">🇨🇴</text></g>
+            <g class="pin" data-place="Argentina" transform="translate(345 385)"><circle r="14"/><text y="1">🇦🇷</text></g>
+            <g class="pin" data-place="Filipinas" transform="translate(731 247)"><circle r="14"/><text y="1">🇵🇭</text></g>
+          </svg>
+        </div><div class="legend"><span><i class="dot"></i>País hispanohablante</span><span><i class="dot gold"></i>España, origen histórico</span></div>
+      </div>
+      <aside class="card side"><h2>Explora por región</h2><p class="side-intro">El español conecta continentes, historias y formas de vivir.</p>
+        <div class="place"><span class="flag">🇪🇸</span><div><h3>España</h3><p>La península donde evolucionó el castellano.</p></div><button data-info="España">Ver</button></div>
+        <div class="place"><span class="flag">🇲🇽</span><div><h3>México</h3><p>El país con más hablantes nativos.</p></div><button data-info="México">Ver</button></div>
+        <div class="place"><span class="flag">🇨🇴</span><div><h3>Colombia</h3><p>Una gran diversidad de acentos y palabras.</p></div><button data-info="Colombia">Ver</button></div>
+        <div class="place"><span class="flag">🇦🇷</span><div><h3>Argentina</h3><p>El español rioplatense y su identidad única.</p></div><button data-info="Argentina">Ver</button></div>
+        <div class="stat"><strong>500+ millones</strong><span>de personas hablan español en el mundo.</span></div>
+      </aside>
+    </section>
+
+    <section class="card history" id="history"><h2>¿Cómo empezó todo?</h2><p>La historia del español es un viaje de siglos: nació de la mezcla, cambió con cada generación y cruzó océanos para convertirse en una lengua global.</p><div class="timeline"><article class="event"><b>Siglos III–I a. C.</b><h3>La raíz latina</h3><p>El latín llevado a la península ibérica se mezcló con las lenguas locales y comenzó a transformarse.</p></article><article class="event"><b>Siglos IX–XIII</b><h3>Nace el castellano</h3><p>En Castilla aparecen los primeros textos romances. El castellano se expande y se consolida.</p></article><article class="event"><b>Desde 1492</b><h3>Un idioma entre mundos</h3><p>El español llega a América y se enriquece con lenguas indígenas y africanas, creando una enorme diversidad.</p></article></div></section>
+    <footer class="footer">Mapa Hispano · Hecho por <strong>Chizu</strong> · Una celebración de nuestra lengua</footer>
+  </main><div class="toast" role="status" aria-live="polite"></div>
+  <script>
+    const toast=document.querySelector('.toast');let timer;
+    function notify(place){const facts={España:'España: el castellano se convirtió en lengua oficial junto a otras lenguas cooficiales.',México:'México: es el país con más hablantes nativos de español.',Colombia:'Colombia: sus regiones reúnen una gran variedad de acentos y expresiones.',Argentina:'Argentina: el voseo y el acento rioplatense son parte de su identidad lingüística.'};toast.textContent=facts[place]||place;toast.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>toast.classList.remove('show'),5000)}
+    document.querySelectorAll('[data-info]').forEach(b=>b.addEventListener('click',()=>notify(b.dataset.info)));document.querySelectorAll('.pin').forEach(p=>p.addEventListener('click',()=>notify(p.dataset.place)));
+    document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));tab.classList.add('active');if(tab.dataset.view==='history')document.querySelector('#history').scrollIntoView({behavior:'smooth'});else document.querySelector('#explore').scrollIntoView({behavior:'smooth'});if(tab.dataset.view==='spain')notify('España');}));
+  </script>
+</body></html>
