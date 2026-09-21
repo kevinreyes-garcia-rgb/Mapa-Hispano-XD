@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Mapa Hispano: mapa detallado de lenguas, pueblos y territorios.">
+  <title>Mapa Hispano · Chizu</title>
+  
+  <!-- D3.js & TopoJSON for rendering a responsive 3D Globe with GeoJSON world boundaries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+
+  <!-- Hoja de estilos externa -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- Loader / Animación de Carga -->
+<div id="translate-loader" class="translate-loader">
+  <div class="spinner"></div>
+  <span id="loader-text">Actualizando idioma…</span>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow" data-i18n="eyebrow">Lengua · cultura · identidad</div>
+    <h1 data-i18n="hero_title">Unidos<br><span>Somos Más</span></h1>
+    <p data-i18n="hero_desc">Explora con detalle los territorios donde se habla español y las lenguas que conviven con él.</p>
+    <span class="credit" data-i18n="credit">Creado por <strong>Chizu</strong></span>
+  </div>
+</header>
+
+<main class="content wrap">
+  <nav class="toolbar" aria-label="Secciones">
+    <button class="tab active" data-scroll="map-section" data-i18n="tab_map">🌎 Mapa de lenguas</button>
+    <button class="tab" data-filter="espanol" data-i18n="tab_spanish">🗣️ Español</button>
+    <button class="tab" data-filter="indigenas" data-i18n="tab_indigenous">🌿 Lenguas originarias</button>
+    <button class="tab" data-scroll="history" data-i18n="tab_history">📖 Historia</button>
+    
+    <!-- Botón con las 3 opciones de Lenguaje -->
+    <div class="lang-dropdown-wrapper">
+      <button class="tab" id="lang-btn">🌐 <span id="current-lang-text">Español</span> ▾</button>
+      <div class="lang-menu" id="lang-menu">
+        <button class="lang-option" data-lang="es">🇪🇸 Español</button>
+        <button class="lang-option" data-lang="en">🇬🇧 English</button>
+        <button class="lang-option" data-lang="fr">🇫🇷 Français</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="card map-card" id="map-section">
+    <div class="map-title">
+      <div>
+        <h2 data-i18n="map_title">Mapa lingüístico interactivo (Globo 3D)</h2>
+        <small data-i18n="map_sub">Gira el mundo arrastrando con el ratón/dedo y haz clic en un punto para explorar.</small>
+      </div>
+      <span aria-hidden="true">🧭</span>
+    </div>
+
+    <div class="map-tools">
+      <input id="search" type="search" placeholder="Buscar idioma, país o región…" aria-label="Buscar idioma, país o región" data-i18n-ph="search_ph">
+      <select id="type">
+        <option value="todos" data-i18n="opt_all">Todas las lenguas</option>
+        <option value="espanol" data-i18n="opt_espanol">Español y variedades</option>
+        <option value="indigenas" data-i18n="opt_indigenas">Lenguas originarias</option>
+        <option value="otras" data-i18n="opt_otras">Otras lenguas</option>
+      </select>
+      <button id="reset" data-i18n="btn_reset">Ver todo</button>
+    </div>
+
+    <div class="map-grid">
+      <div>
+        <div id="map-container" class="map-container" role="application" aria-label="Globo mundi 3D interactivo de lenguas">
+          <svg id="globe-svg"></svg>
+          <div id="globe-tooltip" class="globe-tooltip"></div>
+        </div>
+        <div class="legend">
+          <span data-i18n="leg_lang"><i></i>Lenguas y variedades</span>
+          <span data-i18n="leg_native"><i class="native"></i>Lenguas originarias</span>
+          <span data-i18n="leg_drag">🖱️ Arrastra para girar el planeta</span>
+        </div>
+      </div>
+
+      <aside class="detail" id="detail">
+        <div class="kind" data-i18n="detail_kind_default">Selecciona un marcador</div>
+        <h3 data-i18n="detail_title_default">Descubre una lengua</h3>
+        <p data-i18n="detail_desc_default">Cada punto señala una zona de uso. Busca en el catálogo o pulsa directamente sobre el globo.</p>
+        <div class="language-list" id="list"></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="card history" id="history">
+    <h2 data-i18n="hist_title">¿Cómo empezó todo?</h2>
+    <p data-i18n="hist_desc">El español nació del latín hablado en la península ibérica, evolucionó junto a otras lenguas y viajó a América desde el siglo XV. Hoy convive con cientos de lenguas y variantes locales.</p>
+    <div class="timeline">
+      <article class="event">
+        <b data-i18n="ev1_date">Siglos III–I a. C.</b>
+        <h3 data-i18n="ev1_title">La raíz latina</h3>
+        <p data-i18n="ev1_desc">El latín se mezcla con las lenguas de la península e inicia su transformación.</p>
+      </article>
+      <article class="event">
+        <b data-i18n="ev2_date">Siglos IX–XIII</b>
+        <h3 data-i18n="ev2_title">Nace el castellano</h3>
+        <p data-i18n="ev2_desc">En Castilla aparecen los primeros textos romances y el castellano se consolida.</p>
+      </article>
+      <article class="event">
+        <b data-i18n="ev3_date">Desde 1492</b>
+        <h3 data-i18n="ev3_title">Un idioma entre mundos</h3>
+        <p data-i18n="ev3_desc">El español llega a América y se enriquece con lenguas indígenas y africanas.</p>
+      </article>
+      <article class="event">
+        <b data-i18n="ev4_date">Siglos XX–XXI</b>
+        <h3 data-i18n="ev4_title">Globalización y era digital</h3>
+        <p data-i18n="ev4_desc">Se convierte en el segundo idioma materno del mundo con más de 500 millones de hablantes.</p>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer" data-i18n="footer_text">
+    Mapa Hispano · Hecho por <strong>Chizu</strong> · Una celebración de nuestra lengua
+  </footer>
+</main>
+
+<!-- Script JS externo -->
+<script src="js/main.js"></script>
+</body>
+</html>
