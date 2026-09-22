@@ -22,6 +22,7 @@
 A diferencia de otros sistemas, este mapa se enfoca en la ejecución directa de funciones y interfas sin depender de una IA, lo que lo hace **rápido, ligero y directo**.
 
 >[PRESENTACIÓN DE MI TRABAJO]
+
 > My visual is about How the Spanish language originated <Br>
 I included the countries where it is spoken because it is important in Spanish History <Br>
 One important fact from the reading is <Br>
